@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tieu_chi_dg_user,access_tieu_chi_dg_user,model_tieu_chi_dg,,1,1,1,1
+access_danh_gia_ncc_user,access_danh_gia_ncc_user,model_danh_gia_ncc,,1,1,1,1
+access_ct_danh_gia_ncc_user,access_ct_danh_gia_ncc_user,model_ct_danh_gia_ncc,,1,1,1,1
+access_thong_tin_ncc_user,access_thong_tin_ncc_user,model_thong_tin_ncc,,1,1,1,1

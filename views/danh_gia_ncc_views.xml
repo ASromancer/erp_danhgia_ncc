@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="view_danh_gia_ncc_form" model="ir.ui.view">
+            <field name="name">danh_gia_ncc.form</field>
+            <field name="model">danh_gia_ncc</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="ma_phieu"/>
+                            <field name="ten_ncc"/>
+                            <field name="email"/>
+                            <field name="dien_thoai"/>
+                            <field name="nganh_kd"/>
+                            <field name="ky_dg"/>
+                            <field name="ngay_dg"/>
+                            <field name="quan_ly"/>
+                            <field name="trang_thai"/>
+                        </group>
+                        <group>
+                            <field name="ct_danh_gia_ids" widget="one2many_list">
+                                <tree>
+                                    <field name="tieu_chi_dg"/>
+                                    <field name="da_duoc_dg"/>
+                                    <field name="diem_dg" widget="priority" options="{'max_stars': 5}"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group>
+                            <div>
+                                <h3>Tổng điểm cuối cùng:</h3>
+                                <field name="computed_tong_diem_cuoi_cung" readonly="1"/>
+                            </div>
+                            <div>
+                                <h3>Kết quả đánh giá:</h3>
+                                <field name="round_computed_tong_diem_cuoi_cung" widget="priority" options="{'max_stars': 5}"/>
+                            </div>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_danh_gia_ncc_tree" model="ir.ui.view">
+            <field name="name">danh_gia_ncc.tree</field>
+            <field name="model">danh_gia_ncc</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="ma_phieu"/>
+                    <field name="ten_ncc"/>
+                    <field name="email"/>
+                    <field name="dien_thoai"/>
+                    <field name="nganh_kd"/>
+                    <field name="ky_dg"/>
+                    <field name="ngay_dg"/>
+                    <field name="quan_ly"/>
+                    <field name="trang_thai"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_danh_gia_ncc" model="ir.actions.act_window">
+            <field name="name">Đánh Giá NCC</field>
+            <field name="res_model">danh_gia_ncc</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_danh_gia_ncc_tree"/>
+        </record>
+    </data>
+</odoo>

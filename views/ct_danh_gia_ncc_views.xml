@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+        <record id="view_ct_danh_gia_ncc_tree" model="ir.ui.view">
+            <field name="name">ct_danh_gia_ncc.tree</field>
+            <field name="model">ct_danh_gia_ncc</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="ct_danh_gia_ncc"/>
+                    <field name="tieu_chi_dg"/>
+                    <field name="da_duoc_dg"/>
+                    <field name="diem_dg"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_ct_danh_gia_ncc_form" model="ir.ui.view">
+            <field name="name">ct_danh_gia_ncc.form</field>
+            <field name="model">ct_danh_gia_ncc</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="ct_danh_gia_ncc"/>
+                            <field name="tieu_chi_dg"/>
+                            <field name="da_duoc_dg"/>
+                            <field name="diem_dg" widget="priority"/>
+                            <field name="tong_diem_cuoi_cung"/>
+                            <field name="kq_danh_gia" widget="priority"/>
+                            <field name="thong_tin_phan_hoi"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_ct_danh_gia_ncc" model="ir.actions.act_window">
+            <field name="name">Chi Tiết Đánh Giá NCC</field>
+            <field name="res_model">ct_danh_gia_ncc</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

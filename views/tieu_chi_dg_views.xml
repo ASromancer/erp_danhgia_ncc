@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+        <record id="view_tieu_chi_dg_tree" model="ir.ui.view">
+            <field name="name">tieu_chi_dg.tree</field>
+            <field name="model">tieu_chi_dg</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="ma_tc"/>
+                    <field name="ten_tc"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_tieu_chi_dg_form" model="ir.ui.view">
+            <field name="name">tieu_chi_dg.form</field>
+            <field name="model">tieu_chi_dg</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="ma_tc"/>
+                            <field name="ten_tc"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_tieu_chi_dg" model="ir.actions.act_window">
+            <field name="name">Tiêu Chí Đánh Giá</field>
+            <field name="res_model">tieu_chi_dg</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>
