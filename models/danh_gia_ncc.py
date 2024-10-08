@@ -24,7 +24,11 @@ class DanhGiaNCC(models.Model):
         ('rejected', 'Từ chối'),
         ('canceled', 'Huỷ')
     ], default='draft', string='Trạng thái')
-    ct_danh_gia_ids = fields.One2many('ct_danh_gia_ncc', 'danh_gia_id', string="Chi Tiết Đánh Giá")
+    ct_danh_gia_ids = fields.One2many('ct_danh_gia_ncc', 'danh_gia_id', string="Chi Tiết Đánh Giá", options={
+        'create': False,
+        'no_edit': True,
+        'delete': False,
+    })
 
     @api.model
     def create(self, vals):
@@ -57,5 +61,18 @@ class DanhGiaNCC(models.Model):
             total_score = sum(float(diem) for diem in record.ct_danh_gia_ids.mapped('diem_dg') if diem)
             count = len(record.ct_danh_gia_ids)
             record.computed_tong_diem_cuoi_cung = total_score / count if count else 0
-            record.round_computed_tong_diem_cuoi_cung = str(round(total_score / count if count else 0)) if count else '0'
+            record.round_computed_tong_diem_cuoi_cung = str(
+                round(total_score / count if count else 0)) if count else '0'
+
+    def action_submit(self):
+        self.write({'trang_thai': 'waiting'})
+
+    def action_confirm(self):
+        self.write({'trang_thai': 'confirmed'})
+
+    def action_reject(self):
+        self.write({'trang_thai': 'rejected'})
+
+    def action_cancel(self):
+        self.write({'trang_thai': 'canceled'})
 

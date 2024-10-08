@@ -1,46 +1,67 @@
-<?xml version="1.0"?>
 <odoo>
     <data>
         <record id="view_danh_gia_ncc_form" model="ir.ui.view">
-            <field name="name">danh_gia_ncc.form</field>
+            <field name="name">danh.gia.ncc.form</field>
             <field name="model">danh_gia_ncc</field>
             <field name="arch" type="xml">
-                <form>
+                <form string="Đánh giá nhà cung cấp">
+                    <header>
+                        <button name="action_submit" type="object" string="Gửi Duyệt" class="oe_highlight"
+                                modifiers="{'invisible': [('trang_thai', '!=', 'draft')]}"/>
+                        <button name="action_confirm" type="object" string="Xác Nhận"
+                                modifiers="{'invisible': [('trang_thai', '!=', 'waiting')]}"/>
+                        <button name="action_reject" type="object" string="Từ Chối"
+                                modifiers="{'invisible': [('trang_thai', '!=', 'waiting')]}"/>
+                        <button name="action_cancel" type="object" string="Hủy" class="btn-secondary"
+                                modifiers="{'invisible': [('trang_thai', 'in', ['confirmed', 'rejected', 'canceled'])]}"/>
+                        <field name="trang_thai" widget="statusbar"
+                               statusbar_visible="draft,waiting,confirmed,rejected,canceled"/>
+                    </header>
+
                     <sheet>
-                        <group>
+                        <h1>
                             <field name="ma_phieu"/>
-                            <field name="ten_ncc"/>
-                            <field name="email"/>
-                            <field name="dien_thoai"/>
-                            <field name="nganh_kd"/>
-                            <field name="ky_dg"/>
-                            <field name="ngay_dg"/>
-                            <field name="quan_ly"/>
-                            <field name="trang_thai"/>
+                        </h1>
+
+                        <group string="THÔNG TIN CHUNG">
+                            <group>
+                                <field name="ten_ncc"/>
+                                <field name="email"/>
+                                <field name="dien_thoai"/>
+                                <field name="nganh_kd"/>
+                            </group>
+                            <group>
+                                <field name="ky_dg"/>
+                                <field name="quan_ly"/>
+                                <field name="ngay_dg"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="ct_danh_gia_ids" widget="one2many_list">
-                                <tree>
+
+                        <group string="CHI TIẾT ĐÁNH GIÁ">
+                            <field name="ct_danh_gia_ids" nolabel="1" colspan="2">
+                                <tree editable="bottom" options="{'no_create': True, 'no_delete': True}">
                                     <field name="tieu_chi_dg"/>
                                     <field name="da_duoc_dg"/>
                                     <field name="diem_dg" widget="priority" options="{'max_stars': 5}"/>
                                 </tree>
                             </field>
                         </group>
-                        <group>
-                            <div>
-                                <h3>Tổng điểm cuối cùng:</h3>
-                                <field name="computed_tong_diem_cuoi_cung" readonly="1"/>
-                            </div>
-                            <div>
-                                <h3>Kết quả đánh giá:</h3>
-                                <field name="round_computed_tong_diem_cuoi_cung" widget="priority" options="{'max_stars': 5}"/>
-                            </div>
+
+                        <group string="TỔNG ĐIỂM">
+                            <field name="computed_tong_diem_cuoi_cung" readonly="1"/>
+                        </group>
+
+                        <group string="BÁO CÁO ĐÁNH GIÁ">
+                            <group>
+                                <field name="round_computed_tong_diem_cuoi_cung" widget="priority"
+                                       options="{'max_stars': 5}"/>
+                            </group>
                         </group>
                     </sheet>
                 </form>
             </field>
         </record>
+
 
         <record id="view_danh_gia_ncc_tree" model="ir.ui.view">
             <field name="name">danh_gia_ncc.tree</field>
