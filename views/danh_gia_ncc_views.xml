@@ -39,8 +39,8 @@
 
                         <group string="CHI TIẾT ĐÁNH GIÁ">
                             <field name="ct_danh_gia_ids" nolabel="1" colspan="2">
-                                <tree editable="bottom" options="{'no_create': True, 'no_delete': True}">
-                                    <field name="tieu_chi_dg"/>
+                                <tree editable="bottom" create="False" delete="False">
+                                    <field readonly="1" name="tieu_chi_dg"/>
                                     <field name="da_duoc_dg"/>
                                     <field name="diem_dg" widget="priority" options="{'max_stars': 5}"/>
                                 </tree>
