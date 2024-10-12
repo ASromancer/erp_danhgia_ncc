@@ -1,13 +1,13 @@
 <odoo>
     <data>
-        <menuitem id="menu_nha_cung_cap" name="Nhà Cung Cấp" sequence="5"/>
+        <menuitem id="menu_danh_gia_ncc" name="Đánh Giá NCC" action="action_danh_gia_ncc" sequence="5"/>
+        <menuitem id="ncc_menu"
+                  name="Nhà cung cấp"
+                  parent="purchase.menu_purchase_root"
+                  sequence="10"/>
 
-        <menuitem id="menu_tieu_chi_dg" name="Tiêu Chí Đánh Giá" action="action_tieu_chi_dg" parent="menu_nha_cung_cap" sequence="40"/>
+        <menuitem id="menu_tieu_chi_dg" name="Tiêu Chí Đánh Giá" action="action_tieu_chi_dg" parent="ncc_menu" sequence="40"/>
 
-        <menuitem id="menu_thong_tin_ncc" name="Thông Tin NCC" action="action_thong_tin_ncc" parent="menu_nha_cung_cap" sequence="30"/>
-
-        <menuitem id="menu_danh_gia_ncc" name="Đánh Giá NCC" action="action_danh_gia_ncc" parent="menu_nha_cung_cap" sequence="10"/>
-
-        <menuitem id="menu_ct_danh_gia_ncc" name="Chi Tiết Đánh Giá NCC" action="action_ct_danh_gia_ncc" parent="menu_nha_cung_cap" sequence="20"/>
+        <menuitem id="menu_thong_tin_ncc" name="Thông Tin NCC" action="action_thong_tin_ncc" parent="ncc_menu" sequence="30"/>
     </data>
 </odoo>

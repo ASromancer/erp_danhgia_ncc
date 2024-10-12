@@ -1,35 +1,34 @@
 <odoo>
     <data>
+
         <record id="view_thong_tin_ncc_tree" model="ir.ui.view">
             <field name="name">thong_tin_ncc.tree</field>
-            <field name="model">thong_tin_ncc</field>
+            <field name="model">res.partner</field>
             <field name="arch" type="xml">
-                <tree>
-                    <field name="ten_ncc"/>
-                    <field name="dia_chi"/>
-                    <field name="email"/>
-                    <field name="dien_thoai"/>
-                    <field name="website"/>
+                <tree string="Thông Tin Nhà Cung Cấp">
+                    <field name="name" string="Tên nhà cung cấp"/>
+                    <field name="email" string="Email"/>
+                    <field name="phone" string="Điện thoại"/>
+                    <field name="danh_gia_cuoi_cung" string="Đánh giá cuối cùng"/>
+                    <field name="danh_gia_moi" string="Đánh giá mới"/>
                 </tree>
             </field>
         </record>
 
         <record id="view_thong_tin_ncc_form" model="ir.ui.view">
             <field name="name">thong_tin_ncc.form</field>
-            <field name="model">thong_tin_ncc</field>
+            <field name="model">res.partner</field>
             <field name="arch" type="xml">
-                <form>
+                <form string="Thông Tin Nhà Cung Cấp">
                     <sheet>
                         <group>
-                            <field name="ten_ncc"/>
-                            <field name="dia_chi"/>
-                            <field name="email"/>
-                            <field name="dien_thoai"/>
-                            <field name="website"/>
-                            <field name="tax_id"/>
-                            <field name="tags"/>
-                            <field name="danh_gia_cuoi_cung"/>
-                            <field name="danh_gia_moi"/>
+                            <field name="name" required="1" string="Tên nhà cung cấp"/>
+                            <field name="email" string="Email"/>
+                            <field name="phone" string="Điện thoại"/>
+                        </group>
+                        <group>
+                            <field name="danh_gia_cuoi_cung" string="Đánh giá cuối cùng"/>
+                            <field name="danh_gia_moi" string="Đánh giá mới"/>
                         </group>
                     </sheet>
                 </form>
@@ -38,8 +37,9 @@
 
         <record id="action_thong_tin_ncc" model="ir.actions.act_window">
             <field name="name">Thông Tin NCC</field>
-            <field name="res_model">thong_tin_ncc</field>
+            <field name="res_model">res.partner</field>
             <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_thong_tin_ncc_tree"/>
         </record>
     </data>
 </odoo>

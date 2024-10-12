@@ -1,4 +1,5 @@
-from odoo import models, fields
+from odoo import models, fields, api
+
 
 class CTDanhGiaNCC(models.Model):
     _name = 'ct_danh_gia_ncc'
@@ -26,3 +27,11 @@ class CTDanhGiaNCC(models.Model):
     ], default='0', string="Kết quả đánh giá")
     thong_tin_phan_hoi = fields.Text(string='Thông tin phản hồi')
     danh_gia_id = fields.Many2one('danh_gia_ncc', string="Đánh Giá Nhà Cung Cấp", ondelete='cascade')
+
+    @api.onchange('diem_dg')
+    def _onchange_diem_dg(self):
+        for record in self:
+            if record.diem_dg:
+                record.da_duoc_dg = True
+            else:
+                record.da_duoc_dg = False

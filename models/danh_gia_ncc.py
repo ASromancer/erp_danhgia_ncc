@@ -10,7 +10,7 @@ class DanhGiaNCC(models.Model):
         required=True,
         default=lambda self: self.env['ir.sequence'].next_by_code('danh_gia_ncc') or 'DCNCC0001'
     )
-    ten_ncc = fields.Many2one('thong_tin_ncc', string='Tên nhà cung cấp')
+    ten_ncc = fields.Many2one('res.partner', string='Tên nhà cung cấp')
     email = fields.Char(string='Email', required=True)
     dien_thoai = fields.Integer(string='Điện thoại')
     nganh_kd = fields.Char(string='Ngành kinh doanh')
@@ -27,16 +27,21 @@ class DanhGiaNCC(models.Model):
     ct_danh_gia_ids = fields.One2many('ct_danh_gia_ncc', 'danh_gia_id', string="Chi Tiết Đánh Giá")
 
     @api.model
-    def create(self, vals):
-        record = super(DanhGiaNCC, self).create(vals)
+    def default_get(self, fields_list):
+        defaults = super(DanhGiaNCC, self).default_get(fields_list)
+
         tieu_chi_records = self.env['tieu_chi_dg'].search([])
+
+        ct_danh_gia_defaults = []
         for tieu_chi in tieu_chi_records:
-            self.env['ct_danh_gia_ncc'].create({
-                'ct_danh_gia_ncc': record.id,
-                'danh_gia_id': record.id,
+            ct_danh_gia_defaults.append((0, 0, {
                 'tieu_chi_dg': tieu_chi.id,
-            })
-        return record
+                'da_duoc_dg': False,
+                'diem_dg': 0.0,
+            }))
+
+        defaults['ct_danh_gia_ids'] = ct_danh_gia_defaults
+        return defaults
 
     computed_tong_diem_cuoi_cung = fields.Float(
         string='Tổng Điểm Cuối Cùng',
@@ -63,15 +68,24 @@ class DanhGiaNCC(models.Model):
             record.round_computed_tong_diem_cuoi_cung = str(
                 round(record.computed_tong_diem_cuoi_cung)) if count else '0'
 
+    def action_draft(self):
+        self.write({'trang_thai': 'draft'})
+        return
+
     def action_submit(self):
         self.write({'trang_thai': 'waiting'})
+
+        for record in self.ct_danh_gia_ids:
+            record.danh_gia_id = self.id
+
+        return
 
     def action_confirm(self):
         self.write({'trang_thai': 'confirmed'})
 
         for record in self:
             if record.ten_ncc:
-                thong_tin_ncc = self.env['thong_tin_ncc'].search([('id', '=', record.ten_ncc.id)])
+                thong_tin_ncc = self.env['res.partner'].search([('id', '=', record.ten_ncc.id)])
                 if thong_tin_ncc:
                     thong_tin_ncc.write({
                         'danh_gia_cuoi_cung': record.round_computed_tong_diem_cuoi_cung
@@ -82,4 +96,3 @@ class DanhGiaNCC(models.Model):
 
     def action_cancel(self):
         self.write({'trang_thai': 'canceled'})
-
