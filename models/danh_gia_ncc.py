@@ -24,11 +24,7 @@ class DanhGiaNCC(models.Model):
         ('rejected', 'Từ chối'),
         ('canceled', 'Huỷ')
     ], default='draft', string='Trạng thái')
-    ct_danh_gia_ids = fields.One2many('ct_danh_gia_ncc', 'danh_gia_id', string="Chi Tiết Đánh Giá", options={
-        'create': False,
-        'no_edit': True,
-        'delete': False,
-    })
+    ct_danh_gia_ids = fields.One2many('ct_danh_gia_ncc', 'danh_gia_id', string="Chi Tiết Đánh Giá")
 
     @api.model
     def create(self, vals):
@@ -51,24 +47,35 @@ class DanhGiaNCC(models.Model):
     round_computed_tong_diem_cuoi_cung = fields.Selection(
         selection=[('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')],
         string='Tổng Điểm Cuối Cùng',
-        compute='_compute_tong_diem_cuoi_cuoi',
+        compute='_compute_tong_diem_cuoi_cung',
         store=False
     )
 
-    @api.depends('ct_danh_gia_ids.diem_dg')
+    @api.depends('ct_danh_gia_ids.diem_dg', 'ct_danh_gia_ids.da_duoc_dg')
     def _compute_tong_diem_cuoi_cung(self):
         for record in self:
-            total_score = sum(float(diem) for diem in record.ct_danh_gia_ids.mapped('diem_dg') if diem)
-            count = len(record.ct_danh_gia_ids)
+            valid_ct_danh_gia = record.ct_danh_gia_ids.filtered(lambda r: r.da_duoc_dg)
+
+            total_score = sum(float(diem) for diem in valid_ct_danh_gia.mapped('diem_dg') if diem)
+            count = len(valid_ct_danh_gia)
+
             record.computed_tong_diem_cuoi_cung = total_score / count if count else 0
             record.round_computed_tong_diem_cuoi_cung = str(
-                round(total_score / count if count else 0)) if count else '0'
+                round(record.computed_tong_diem_cuoi_cung)) if count else '0'
 
     def action_submit(self):
         self.write({'trang_thai': 'waiting'})
 
     def action_confirm(self):
         self.write({'trang_thai': 'confirmed'})
+
+        for record in self:
+            if record.ten_ncc:
+                thong_tin_ncc = self.env['thong_tin_ncc'].search([('id', '=', record.ten_ncc.id)])
+                if thong_tin_ncc:
+                    thong_tin_ncc.write({
+                        'danh_gia_cuoi_cung': record.round_computed_tong_diem_cuoi_cung
+                    })
 
     def action_reject(self):
         self.write({'trang_thai': 'rejected'})
